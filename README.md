@@ -10,3 +10,4 @@ Run this anywhere on your computer:
 Run this in the root of your raylib-game-template based project:  
 `docker run --rm -v $(pwd):/app/project -u $(id -u):$(id -g) michaelfiber/mikes-raylib-wasm-builder:latest`
 
+When it is done your raylib-game-template based project should have a `dist` directory containing the wasm files.
