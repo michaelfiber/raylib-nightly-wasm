@@ -31,7 +31,7 @@ jobs:
       - name: Build Raylib WASM
         run: cd ./raylib/src && PLATFORM=PLATFORM_WEB make all
       - name: Compress it
-        run: ls -lh
+        run: mkdir publish && mv raylib/src/libraylib.a publish/ && cd publish && gzip libraylib.a
       - name: Send to publish branch
         uses: moodiest/push-to-branch-action@develop
         env:
