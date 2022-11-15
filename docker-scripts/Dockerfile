@@ -8,4 +8,6 @@ RUN mkdir -p /app/raylib/src
 RUN mv libraylib.a /app/raylib/src/ && mv raylib.h /app/raylib/src/
 COPY internal-build.sh /usr/bin/
 
+RUN chmod +x /usr/bin/internal-build.sh
+
 ENTRYPOINT ["internal-build.sh"]
