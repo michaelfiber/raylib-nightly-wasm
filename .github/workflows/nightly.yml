@@ -30,8 +30,15 @@ jobs:
         uses: mymindstorm/setup-emsdk@v11
       - name: Build Raylib WASM
         run: cd ./raylib/src && PLATFORM=PLATFORM_WEB make all
-      - name: Compress it
-        run: mkdir -p $GITHUB_WORKSPACE/publish && mv raylib/src/libraylib.a $GITHUB_WORKSPACE/publish/ && cd $GITHUB_WORKSPACE/publish && gzip libraylib.a
+      - name: Gather the files
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/publish
+          mkdir -p $GITHUB_WORKSPACE/staging
+          mv raylib/src/libraylib.a $GITHUB_WORKSPACE/staging/ 
+          mv raylib/src/raylib.h $GITHUB_WORKSPACE/staging/
+          cd $GITHUB_WORKSPACE/staging 
+          tar -czf ../publish/raylib.wasm.tar.gz libraylib.a raylib.h
+        shell: bash
       - name: Send to publish branch
         uses: moodiest/push-to-branch-action@develop
         env:
