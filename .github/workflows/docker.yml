@@ -16,4 +16,4 @@ jobs:
           path: michaelfiber-raylib-game-template
           repository: michaelfiber/raylib-game-template
       - name: Run build script
-        run: $GITHUB_WORKSPACE/michaelfiber-raylib-game-template/src/docker-scripts/docker-build.sh
+        run: ls && $GITHUB_WORKSPACE/michaelfiber-raylib-game-template/src/docker-scripts/docker-build.sh
