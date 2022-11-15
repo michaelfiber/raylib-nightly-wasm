@@ -2,7 +2,7 @@ name: Nightly raylib WASM build
 on:
   schedule:
     - cron: '0 3 * * *'
-  workflow_distpatch:
+  workflow_dispatch:
 jobs:
   make-publish-branch:
     name: Make publish branch
