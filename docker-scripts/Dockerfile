@@ -10,4 +10,4 @@ COPY internal-build.sh /usr/bin/
 
 RUN chmod +x /usr/bin/internal-build.sh
 
-ENTRYPOINT ["internal-build.sh"]
+ENTRYPOINT ["/usr/bin/internal-build.sh"]
