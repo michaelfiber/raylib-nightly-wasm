@@ -17,4 +17,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Run build script
-        run: ./docker-scripts/docker-build.sh
+        run: chmod +x ./docker-scripts/docker-build.sh && ./docker-scripts/docker-build.sh
