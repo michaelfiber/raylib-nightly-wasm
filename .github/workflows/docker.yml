@@ -3,17 +3,18 @@ on:
   pull_request:
     branches: ["main"]
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 6 * * *'
   workflow_dispatch:
 jobs:
   build-docker:
-    name: Build mikes-raylib-wasm-builder docker image
+    name: Build michaelfiber/mikes-raylib-wasm-builder docker image
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout michaelfiber/raylib-game-template
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          path: michaelfiber-raylib-game-template
-          repository: michaelfiber/raylib-game-template
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Run build script
-        run: ./michaelfiber-raylib-game-template/src/docker-scripts/docker-build.sh
+        run: chmod +x ./docker-scripts/docker-build.sh && ./docker-scripts/docker-build.sh
