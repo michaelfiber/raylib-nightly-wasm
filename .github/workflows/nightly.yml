@@ -1,0 +1,32 @@
+name: Nightly raylib WASM build
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_distpatch:
+jobs:
+  make-publish-branch:
+    name: Make publish branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create publish branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'publish'
+  build:
+    name: Nightly raylib WASM build
+    needs: [make-publish-branch]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y make build-essential libasound2-dev mesa-common-dev libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev libglu1-mesa-dev python3
+      - name: Checkout raylib
+        uses: actions/checkout@v3
+        with:
+          path: raylib
+          repository: raysan5/raylib
+      - name: Intall emsdk
+        uses: mymindstorm/setup-emsdk@v11
+      - name: Build Raylib WASM
+        run: cd ./raylib/src && PLATFORM=PLATFORM_WEB make all
