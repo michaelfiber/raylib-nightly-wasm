@@ -37,5 +37,5 @@ jobs:
         env:
           REPO: self
           BRANCH: publish
-          FOLDER: /publish
+          FOLDER: publish
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
