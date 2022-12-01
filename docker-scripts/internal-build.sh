@@ -48,4 +48,12 @@ if [[ $HAS_GITHUB_SCRIPTS == "true" ]]; then
 
 fi
 
+if [[ -f ./minshell.css ]]; then
+	cp ./minshell.css /app/project/dist/
+fi
+
+if [[ -f ./virtual-gamepad.js ]]; then
+	cp ./virtual-gamepad.js /app/project/dist/
+fi
+
 make clean
