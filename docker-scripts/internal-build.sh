@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-GITHUB_CONFIG=/app/project/github-scripts/config
-source $GITHUB_CONFIG
+HAS_GITHUB_SCRIPTS=false
 
-if [[ $PWA == "true" ]]; then
-	echo "Building with PWA enabled"	
-fi
+if [[ -d /app/project/github-scripts ]]; then
+	HAS_GITHUB_SCRIPTS=true
 
-if [[ $MOBILE_CONTROLS == "true" ]]; then
-	echo "Building with on screen controls for mobile"
+	GITHUB_CONFIG=/app/project/github-scripts/config
+	source $GITHUB_CONFIG
+
+	if [[ $PWA == "true" ]]; then
+		echo "Building with PWA enabled"	
+	fi
 fi
 
 cd /app/project/src
@@ -19,34 +21,31 @@ mkdir -p /app/project/dist
 
 mv index.* /app/project/dist/
 
-# automatically strip release.zip for the gamejam builder.
-#sed -i 's/<div><a href=release.zip>Download Release ZIP<\/a><\/div>//g' /app/project/dist/index.html
+# The githubs-scripts folder indicates this is Mike's raylib-game-template fork so move those files over too.
+if [[ $HAS_GITHUB_SCRIPTS == "true" ]]; then
 
-if [[ $PWA == "true" ]]; then
+	# Automatically strip the release zip because this is built in docker locally.
+	sed -i 's/<div><a href=release.zip>Download Release ZIP<\/a><\/div>//g' /app/project/dist/index.html
 
-	TIMESTAMP=$(date '+%s')
+	if [[ $PWA == "true" ]]; then
 
-	cp ./sw.js /app/project/dist/
-	cp ./pwa-bootstrap.js /app/project/dist/
+		TIMESTAMP=$(date '+%s')
 
-	# each new build will reset caching in the PWA.
-	sed -i "s/RAYLIB_GAME_TEMPLATE_FORK_CACHE_NAME/cache_name_$TIMESTAMP/g" /app/project/dist/sw.js
+		cp ./sw.js /app/project/dist/
+		cp ./pwa-bootstrap.js /app/project/dist/
 
-	# when built in docker assume root directory.
-	sed -i "s/\/PATH_TO_PWA//g" /app/project/dist/pwa-bootstrap.js
+		# each new build will reset caching in the PWA.
+		sed -i "s/RAYLIB_GAME_TEMPLATE_FORK_CACHE_NAME/cache_name_$TIMESTAMP/g" /app/project/dist/sw.js
 
-else
+		# when built in docker assume root directory.
+		sed -i "s/\/PATH_TO_PWA//g" /app/project/dist/pwa-bootstrap.js
 
-	sed -i 's/<script src=pwa-bootstrap.js><\/script>//g' /app/project/dist/index.html
+	else
 
-fi
+		sed -i 's/<script src=pwa-bootstrap.js><\/script>//g' /app/project/dist/index.html
 
-if [[ -f ./minshell.css ]]; then
-	cp ./minshell.css /app/project/dist/
-fi
+	fi
 
-if [[ -f ./virtual-gamepad.js ]]; then
-	cp ./virtual-gamepad.js /app/project/dist/
 fi
 
 make clean
