@@ -26,6 +26,8 @@ jobs:
         with:
           path: raylib
           repository: raysan5/raylib
+      - name: Update config.h
+        run: cd ./raylib/src && sed -i 's/#define AUDIO_DEVICE_SAMPLE_RATE           0/#define AUDIO_DEVICE_SAMPLE_RATE           48000/g' config.h
       - name: Intall emsdk
         uses: mymindstorm/setup-emsdk@v11
       - name: Build Raylib WASM
