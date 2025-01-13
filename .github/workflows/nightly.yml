@@ -35,10 +35,11 @@ jobs:
       - name: Gather the files
         run: |
           mkdir -p $GITHUB_WORKSPACE/publish
-          mv raylib/src/libraylib.a $GITHUB_WORKSPACE/publish/ 
+          mv raylib/src/libraylib.web.a $GITHUB_WORKSPACE/publish/ 
           mv raylib/src/raylib.h $GITHUB_WORKSPACE/publish/
+          cp $GITHUB_WORKSPACE/publish/libraylib.web.a $GITHUB_WORKSPACE/publish/libraylib.a
           cd $GITHUB_WORKSPACE/publish
-          tar -czf raylib.wasm.tar.gz libraylib.a raylib.h
+          tar -czf raylib.wasm.tar.gz libraylib.web.a libraylib.a raylib.h
         shell: bash
       - name: Send to publish branch
         uses: moodiest/push-to-branch-action@develop
